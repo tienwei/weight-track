@@ -2,3 +2,5 @@
 composer.lock
 /vendor
 .env
+public/scripts/
+public/styles/

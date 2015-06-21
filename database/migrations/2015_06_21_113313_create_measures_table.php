@@ -14,9 +14,15 @@ class CreateMeasuresTable extends Migration
   {
     Schema::create('measures', function (Blueprint $table) {
       $table->increments('id');
-      $table->integer('weight');
+      $table->integer('weight')->unsigned();
       $table->dateTime('date');
-      $table->integer('userId');
+      $table->integer('session_id')->unsigned();
+      $table->foreign('session_id')
+        ->references('id')->on('sessions')
+        ->onDelete('cascade');
+//      $table->foreign('user_id')
+//        ->references('id')->on('users')
+//        ->onDelete('cascade');
       $table->timestamps();
     });
   }
@@ -28,6 +34,8 @@ class CreateMeasuresTable extends Migration
    */
   public function down()
   {
-    Schema::drop('measures');
+    Schema::drop('measures', function (Blueprint $table) {
+      $table->dropForeign('measures_session_id_foreign');
+    });
   }
 }
